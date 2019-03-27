@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Edytuj{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<div style="margin-top: 100px;">
+<div class="container">
+    <p class="text-dark"><strong></strong></p>
+    <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Dziękuję za dodanie postu. :)</h4>
+            Jeśli chcesz, możesz go teraz edytować. Na przykład jeśli chcesz napisać coś od siebie do informacji o inspiracji, która została wrzucona.
+    </div>
+    <a href="/" class="btn btn-danger-gradiant">Wróć do strony głównej</a>
+    <p class="text-dark"><strong></strong></p>
+    <h5 class="mb-4">Edytuj dane</h5>
+<form method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary text-lowercase letter-spacing-1">Zapisz edycję</button>
+</form>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+<div class="likes mt-3">
+    {% if can_like %}
+        <a class="like-link {{ like_class }} has-text ajax btn btn-sm btn-danger"
+           data-method="post"
+           data-replace-closest=".likes"
+           href="{{ like_url }}">
+           <i class="{% if like_class == "liked" %}fas{% else %}far{% endif %} fa-thumbs-up"></i>
+           <span class="count-label text-lowercase letter-spacing-1">
+            <span class="count">{{ like_count }}</span>
+            Lubię to!
+        </span>
+        </a>
+    {% endif %}
+
+</div>

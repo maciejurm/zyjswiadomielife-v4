@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Strona główna{% endblock %}
+
+{% block content %}
+{% load thumbnail %}
+<style>
+  .fa-arrow-circle-up {
+    color: #2377ff;
+  }
+</style>
+
+  <div class="container">
+    <div class="row">
+    <div class="col-md-8">
+    {% for board in boards %}
+          {% for embed in board.embeds.all %}
+          <div class="panel mb">
+            {% if embed.board %}
+            <span><a href="{{ embed.board.get_absolute_url }}">{{ embed.board }}</a></span>
+            {% endif %}  
+            <h3><a href="{{ embed.get_absolute_url }}">{{ embed.title }}</a></h3>
+              <span class="userimage">
+                {% if embed.author.profile.image %}
+                <a href="{{ embed.author.get_absolute_url }}"><img src="{{ embed.author.profile.image.url }}" width="30" height="30" alt=""></a>
+                {% else %}
+                {% load initialavatar %}
+                <a href="{{ embed.author.get_absolute_url }}">{% get_initial_avatar embed.author 30 'circle' %}</a>
+                {% endif %}</span>
+             <span class="username"><a href="{{ embed.author.get_absolute_url }}">{{ embed.author.username }}</a> | Dodano: {{ embed.created_at|timesince }} temu</span>
+        
+        
+              <div class="row">
+                  <div class="col-xs-12 text-justify text-dark mb-2 mt-2">
+                      {{ embed.description|truncatewords:20|safe }}
+                  </div>
+                  <div class="col-xs-12 mb-3 mt-2">
+                    {{ embed.html|safe }}
+                  </div>
+                  <div class="col-xs-12">
+                      <ul class="action-button">
+                          <li><a data-id="{{ embed.id }}" data-type="embed" data-action="like" title="Like" class="mt-3"><i class="fas fa-arrow-circle-up"></i> Inspirujące! <span data-count="like">{{ embed.votes.likes.count }}</span></a></li>
+                         <!-- <li><i class="fas fa-edit mb-2 mt-2"></i><b>Udostępnij</b></li> -->
+                          <li class="right dropdown-action">
+                              <div class="dropdown">
+                                  <i class="fas fa-ellipsis-h dropbtn mb-2 mt-2" onclick="myFunction(2)"></i>
+                                  <div id="myDropdown2" class="dropdown-content">
+                                      <a href="#">Link 1</a>
+                                      <a href="#">Link 2</a>
+                                      <a href="#">Link 3</a>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+    <div class="col-xs-12 col-md-4 hidden-xs">
+      <div class="panel">
+          
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+
+{% endblock %}

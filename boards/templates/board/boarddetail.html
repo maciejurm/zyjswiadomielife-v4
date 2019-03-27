@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %} {% endblock %}
+
+{% block content %}
+{% load thumbnail %}
+<div style="margin-top: 100px;">
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <h3>{{ board.title }}</h3>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="text-right">
+        {% if board in request.user.subscribed_boards.all %}
+          <a href="{% url 'subscribe' board.slug %}" class="btn btn-secondary btn-sm letter-spacing-1" id="subscribe_board">Przestań obserwować</a>
+        {% else %}
+          <a href="{% url 'subscribe' board.slug %}" class="btn btn-primary btn-sm letter-spacing-1" id="subscribe_board">Obserwuj</a>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bg-light pt-5">
+<div class="container">
+
+<div class="row">
+     {% for subject in subjects %}
+     <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="card">
+          <div class="card-body d-flex align-items-center">
+            <div class="w-100">
+              <h6 class="card-title"><a href="{{ subject.get_absolute_url }}" class="text-decoration-none text-dark">{{ subject.title }}</a></h6>
+              <div class="d-flex card-subtitle mb-3">
+                <p class="flex-grow-1 mb-0 text-muted text-sm">{{ subject.body|truncatewords:10|striptags }}</p>
+
+               
+              </div>
+
+            </div>
+          </div>
+          <div class="card-footer bg-white" style="border-top:0ch;">
+              <div class="timeline-header">
+                  <span class="userimage">
+                      {% if subject.author.profile.photo %}
+                      <a href="{{ subject.author.get_absolute_url }}"><img src="{{ subject.author.profile.photo.cdn_url }}" width="30" height="30" alt=""></a>
+                      {% else %}
+                      {% load initialavatar %}
+                      <a href="{{ subject.author.get_absolute_url }}">{% get_initial_avatar subject.author 30 'circle' %}</a>
+                      {% endif %}</span>
+                   <span class="username"><a href="{{ subject.author.get_absolute_url }}">{{ subject.author.username }}</a></span>
+                   <span><small>Dodano: {{ subject.created_at|timesince }}</small></span>
+               </div>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% for embed in embeds %}
+    <!-- place item-->
+    <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card border-0 shadow">
+              <div class="card-img-top overflow-hidden gradient-overlay"><a href="{{ embed.get_absolute_url }}" class="tile-link">
+                {% thumbnail embed.thumbnail_url "400" as im %}
+                <img src="{{ im.url }}" alt="{{ embed.title }}" class="img-fluid"/></a>
+                {% endthumbnail %}
+                <div class="card-img-overlay-bottom z-index-20">
+
+                </div>
+              </div>
+              <div class="card-body d-flex align-items-center">
+                <div class="w-100">
+                  <h6 class="card-title"><a href="{{ embed.get_absolute_url }}" class="text-decoration-none text-dark">{{ embed.title }}</a></h6>
+                  <div class="d-flex card-subtitle mb-3">
+                    <p class="flex-grow-1 mb-0 text-muted text-sm">{{ embed.description|truncatewords:10|striptags }}</p>
+
+                   
+                  </div>
+
+                </div>
+              </div>
+              <div class="card-footer bg-white" style="border-top:0ch;">
+                  <div class="timeline-header">
+                      <span class="userimage">
+                          {% if embed.author.profile.photo %}
+                          <a href="{{ embed.author.get_absolute_url }}"><img src="{{ embed.author.profile.photo.cdn_url }}" width="30" height="30" alt=""></a>
+                          {% else %}
+                          {% load initialavatar %}
+                          <a href="{{ embed.author.get_absolute_url }}">{% get_initial_avatar embed.author 30 'circle' %}</a>
+                          {% endif %}</span>
+                       <span class="username"><a href="{{ embed.author.get_absolute_url }}">{{ embed.author.username }}</a></span>
+                       <span><small>Dodano: {{ embed.created_at|timesince }}</small></span>
+                   </div>
+                </div>
+            </div>
+  </div>
+          <!-- place item-->
+{% endfor %}
+</div>
+
+</div>
+</div>
+
+
+</div>
+</div>
+{% endblock %}

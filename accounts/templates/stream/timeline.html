@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+{% load activity_tags %}
+<div style="margin-top: 100px;">
+<div class="container">
+    <div class="row">
+            {% activity_stream 'actor' user %}
+            {% for action in stream %}
+                {% display_action action %}
+            {% endfor %}
+    </div>
+</div>
+</div>
+{% endblock %}
